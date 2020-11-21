@@ -12,28 +12,37 @@ contract Wikipedia {
 
 
   uint[] public ids;
-  uint id = 0;
   mapping (uint => Article) public articlesById;
 
   constructor() public {
-    ids.push(id);
+    ids.push(0);
     Article memory newArticle = Article("This is your first article in your contract");
-    articlesById[id++] = newArticle;
+    articlesById[0] = newArticle;
   }
 
   function articleContent(uint index) public view returns (string memory) {
     return articlesById[index].content;
   }
 
-  function addArticle(string memory content) public {
+  function addArticle(uint index, string memory content) public returns (bool) {
+    if(bytes(articlesById[index].content).length != 0) return false;
     Article memory newArticle = Article(content);
-    articlesById[id] = newArticle;
-    emit UpdateArticle(msg.sender, id);
-    ids.push(id++);
+    articlesById[index] = newArticle;
+    ids.push(index);
+    return true;
   }
 
   function getAllIds() public view returns (uint[] memory) {
     return ids;
+  }
+
+  function modifyContent(uint index, string memory content) public returns (bool){
+    if(bytes(articlesById[index].content).length != 0){
+      Article memory newArticle = Article(content);
+      articlesById[index] = newArticle;
+      return true;
+    }
+    return false;
   }
 
 }
