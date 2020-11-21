@@ -15,7 +15,7 @@ const connect = async dispatch => {
       )
       console.log("Contract: ", contract);
       console.log("Account: ", account);
-      dispatch(reducer.connectEthereum({ account, contract }))
+      dispatch({type: reducer.CONNECT_ETHEREUM, account, contract })
     } catch (error) {
       console.error(error)
     }
@@ -26,23 +26,31 @@ const connect = async dispatch => {
 
 
 const addArticle = async (dispatch, getState) =>{
-  const {contract} = getState()
+  const {contract} = getState();
+  var id = document.getElementById("inputId").value;
   var content = document.getElementById("inputContent").value;
-  await contract.methods.addArticle(content).send()
+  await contract.methods.addArticle(id, content).send()
 }
 
-const getAllIds = (contract) => async dispatch =>{
-  const result = await contract.methods.getAllIds().call();
-  dispatch({type: reducer.UPDATE_IDS, result})
+const modifyArticle = async (dispatch, getState) => {
+  const {contract} = getState();
+  var id = document.getElementById("inputId").value;
+  var content = document.getElementById("inputContent").value;
+  await contract.methods.modifyContent(id, content).send()
 }
 
-const getAllArtilces = (contract, ids) => async dispatch =>{
-  var articles = new Map();
-  for(let id of ids){
-    articles.set(id, await contract.methods.articleContent(id).call());
+const getAllArticles = async (contract) => {
+  var ids = await contract.methods.getAllIds().call();
+  var articleArr = new Map();
+  for(var i=0;i<ids.length;i++) {
+    articleArr.set(ids[i], await contract.methods.articleContent(ids[i]).call());
   }
-  dispatch({type:reducer.UPDATE_ARTICLES, articles})
+  return articleArr;
 }
 
+const getArticleById = async(contract) => {
+  var id = document.getElementById("inputId").value;
+  return await contract.methods.articleContent(id).call();
+}
 
-export { connect, addArticle, getAllIds, getAllArtilces}
+export { connect, addArticle, modifyArticle, getAllArticles, getArticleById}
