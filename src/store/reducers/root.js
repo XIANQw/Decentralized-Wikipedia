@@ -1,42 +1,80 @@
-export const UPDATE_USER = 'UPDATE_USER'
 export const CONNECT_ETHEREUM = 'CONNECT_ETHEREUM'
+export const UPDATE_USER = 'UPDATE_USER'
+export const UPDATE_ACCOUNT = 'UPDATE_ACCOUNT'
+export const UPDATE_CONTRACT = 'UPDATE_CONTRACT'
 export const UPDATE_ARTICLES = 'UPDATE_ARTICLES'
+export const UPDATE_ID = 'UPDATE_ID'
+export const UPDATE_CONTENT = 'UPDATE_CONTENT'
 export const UPDATE_IDS = 'UPDATE_IDS'
 
+
 const initialState = {
-  user: null,
-  account: null,
-  contract: null,
-  articles: null,
+  user : null,
+  account : null,
+  contract : null,
+  articles : null,
+  sending:{
+    id: null,
+    content : null
+  },
   ids : null
 }
 
-const updateUser = user => ({ type: UPDATE_USER, user })
-const updateIds = ids => ({type: UPDATE_IDS, ids})
+const connectEthereum = (state, { account, contract }) => {
+  return {...state, account, contract}
+}
 
-const connectEthereum = ({ account, contract }) => ({
-  type: CONNECT_ETHEREUM,
-  account,
-  contract,
-})
+const updateUser = (state, { user }) => { 
+  return { ...state, user }
+}
 
-const updateArticles = articles => ({type: UPDATE_ARTICLES, articles})
+const updateAccount = (state, {account}) => {
+  return {...state, account}
+}
+
+const updateContract = (state, {contract}) => {
+  return {...state, contract}
+}
+
+const updateArticles = (state, {articles}) => {
+  return {...state, articles}
+}
+
+const updateId = (state, {id}) => {
+  const sending = {...state.sending, id: id}
+  return {...state, sending}
+}
+
+const updateContent = (state, {content}) => {
+  const sending = {...state.sending, content: content}
+  return {...state, sending}
+}
+
+const updateIds = (state, {ids}) => {
+  return { ...state, ids}
+}
 
 const rootReducer = (state = initialState, action) => {
   switch (action.type) {
-    case UPDATE_USER:
-      const { user } = action
-      return { ...state, user }
     case CONNECT_ETHEREUM:
-      const { account, contract } = action
-      return { ...state, account, contract }
-    case UPDATE_ARTICLES:
-      const {articles} = action
-      return {...state, articles}
+      return connectEthereum(state, action);
+    case UPDATE_USER:
+      return updateUser(state, action)
+    case UPDATE_ACCOUNT:
+      return updateAccount(state, action);
+    case UPDATE_CONTRACT:
+      return updateContract(state, action);
+    case UPDATE_ARTICLES :
+      return updateArticles(state, action);
+    case UPDATE_ID:
+      return updateId(state, action);
+    case UPDATE_CONTENT:
+      return updateContent(state, action)
+    case UPDATE_IDS:
+      return updateIds(state, action);
     default:
       return state
   }
 }
 
 export default rootReducer
-export { updateUser, updateIds, connectEthereum, updateArticles}
