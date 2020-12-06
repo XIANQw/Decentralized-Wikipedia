@@ -3,6 +3,8 @@ import ContractInterface from '../build/contracts/Wikipedia.json'
 import * as reducer from '../store/reducers/root'
 
 
+var contractInstance = null;
+
 const connect = async dispatch => {
   if (window.ethereum) {
     window.web3 = new Web3(window.ethereum)
@@ -13,9 +15,11 @@ const connect = async dispatch => {
         ContractInterface.networks['5777'].address,
         { from: account }
       )
+      contractInstance = contract;
       console.log("Contract: ", contract);
       console.log("Account: ", account);
-      dispatch({type: reducer.CONNECT_ETHEREUM, account, contract })
+
+      dispatch({ type: reducer.CONNECT_ETHEREUM, account, contract })
     } catch (error) {
       console.error(error)
     }
@@ -25,32 +29,30 @@ const connect = async dispatch => {
 }
 
 
-const addArticle = async (dispatch, getState) =>{
-  const {contract} = getState();
+const addArticle = () => {
   var id = document.getElementById("inputId").value;
   var content = document.getElementById("inputContent").value;
-  await contract.methods.addArticle(id, content).send()
+  contractInstance.methods.addArticle(id, content).send()
 }
 
-const modifyArticle = async (dispatch, getState) => {
-  const {contract} = getState();
+const modifyArticle = () => {
   var id = document.getElementById("inputId").value;
   var content = document.getElementById("inputContent").value;
-  await contract.methods.modifyContent(id, content).send()
+  contractInstance.methods.modifyContent(id, content).send();
 }
 
-const getAllArticles = async (contract) => {
-  var ids = await contract.methods.getAllIds().call();
+const getAllArticles = async () => {
+  var ids = await contractInstance.methods.getAllIds().call();
   var articleArr = new Map();
-  for(var i=0;i<ids.length;i++) {
-    articleArr.set(ids[i], await contract.methods.articleContent(ids[i]).call());
+  for (var i = 0; i < ids.length; i++) {
+    articleArr.set(ids[i], await contractInstance.methods.articleContent(ids[i]).call());
   }
   return articleArr;
 }
 
-const getArticleById = async(contract) => {
+const getArticleById = async () => {
   var id = document.getElementById("inputId").value;
-  return await contract.methods.articleContent(id).call();
+  return await contractInstance.methods.articleContent(id).call();
 }
 
-export { connect, addArticle, modifyArticle, getAllArticles, getArticleById}
+export { connect, addArticle, modifyArticle, getAllArticles, getArticleById }

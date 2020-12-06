@@ -6,18 +6,11 @@ be forced to pay for servers.
 
 # Installation
 
-```bash
-# With HTTPS
-git clone https://github.com/ghivert/decentralized-wikipedia.git
-# Or with SSH
-git clone git@github.com:ghivert/decentralized-wikipedia.git
-```
-
-You’ll need to install dependencies. You’ll need [`Ganache`](https://www.trufflesuite.com/ganache), [`Node.js`](https://nodejs.org/en/) and [`NPM`](https://www.npmjs.com/) or [`Yarn`](https://yarnpkg.com/). You’ll need to install [`Metamask`](https://metamask.io/) as well to communicate with your blockchain.
+You’ll need to install dependencies. You’ll need [`Ganache`](https://www.trufflesuite.com/ganache), [`Node.js`](https://nodejs.org/en/) and [`NPM`](https://www.npmjs.com/). You’ll need to install [`Metamask`](https://metamask.io/) as well to communicate with your blockchain.
 
 - `Ganache` is a local blockchain development, to iterate quickly and avoiding wasting Ether during development.
 - `Node.js` is used to build the frontend and running `truffle`, which is a utility to deploy contracts.
-- `NPM` or `Yarn` is a package manager, to install dependencies for your frontend development. Yarn is recommended.
+- `NPM`  is a package manager, to install dependencies for your frontend development. Yarn is recommended.
 - `Metamask` is a in-browser utility to interact with decentralized applications.
 
 # Some setup
@@ -34,17 +27,12 @@ Once you have done it, you’re connected to the Ganache blockchain!
 Install the dependencies.
 
 ```bash
-# Yarn users
-yarn
-# NPM users
 npm install
 ```
 
 Compile the contracts.
 
 ```bash
-# Yarn users
-yarn contracts:build
 # NPM users
 npm run contracts:build
 ```
@@ -52,24 +40,22 @@ npm run contracts:build
 Create a symlink for your OS.
 
 ```bash
-# Windows
-mklink /D src\build "..\build"
-move /Y truffle.js truffle-config.js
-
 # Unix and macOS
-ln -s ../build ./src/build
+ln -s build src/build
+```
+
+```bash
+# after open your ganache and setup a local blockchain, migrate your smart contract on blockchain
+npm run contracts:migrate
 ```
 
 Run the frontend
-
 ```bash
-# Yarn users
-yarn start
 # NPM users
 npm start
 ```
 
-You’re good to go!
+You' re good to go!
 
 # Subject
 

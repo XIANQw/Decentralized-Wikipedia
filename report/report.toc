@@ -1,0 +1,11 @@
+\babel@toc {french}{}
+\contentsline {section}{\numberline {1}Préface}{2}{section.1}
+\contentsline {subsection}{\numberline {1.1}Objectif}{2}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Techninologies utilisées}{2}{subsection.1.2}
+\contentsline {section}{\numberline {2}Architecture du projet}{2}{section.2}
+\contentsline {subsection}{\numberline {2.1}Structure de l'application}{2}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Diagramme de l'application}{2}{subsection.2.2}
+\contentsline {section}{\numberline {3}Fonctionnalités de l'application}{2}{section.3}
+\contentsline {subsection}{\numberline {3.1}Addition de l'article}{2}{subsection.3.1}
+\contentsline {subsection}{\numberline {3.2}Consulter la liste des articles}{2}{subsection.3.2}
+\contentsline {subsection}{\numberline {3.3}Chercher l'article}{2}{subsection.3.3}

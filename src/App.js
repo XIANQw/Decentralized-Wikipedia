@@ -11,26 +11,14 @@ var newContent;
 export {newContent};
 
 const FormSubmit = (func) => {
-  const dispatch = useDispatch();
-  const eventHandler = () => dispatch(func);
   return (
     <div className="padding-6">
-      <button className="btn btn_outline_primary btn_sm" onClick={eventHandler}>submit</button>
+      <button className="btn btn_outline_primary btn_sm" onClick={func}>submit</button>
     </div>
   )
 }
 
 const Form = (title, func) => {
-  const dispatch = useDispatch();
-  const updateId = val => {
-    dispatch({type: reducer.UPDATE_ID, val })
-  }
-  const updateContent = val =>{
-    dispatch({type: reducer.UPDATE_CONTENT, val })
-  }
-  const {sending} = useSelector(({sending})=>{
-    return sending;
-  })
   const submitCom = FormSubmit(func);
   return (
     <div>
@@ -40,13 +28,9 @@ const Form = (title, func) => {
       <div className={styles.mediumWrapper}>
         <p>id: <input id="inputId" 
         placeholder="the article's id"
-        onChange={event=>updateId(event.target.value)}
-        value={sending?.id}
         /></p>
         <p><textarea id="inputContent" cols="33" rows="5" className={styles.editable} 
         placeholder="the article's content"
-        onChange={event => updateContent(event.target.value)}
-        value={sending?.content}
         /></p>
       </div>
       {submitCom}
@@ -63,26 +47,13 @@ const getArticleById = async (dispatch, getState) =>{
   document.getElementById("searchResult").innerHTML = content;
 }
 
-
-const Home = () => {
-  return (
-    <div className={styles.links}>
-      <Link to="/">Home</Link>
-      <Link to="/article/new">Add an article</Link>
-      <Link to="/article/modify">Modify articles</Link>
-      <Link to="/article/all">All articles</Link>
-    </div>
-  )
-}
-
 const AllArticles = () => {
   const dispatch = useDispatch();
   const [articles, setArticles] = useState(new Map())
-  const contract = useSelector(({ contract }) => contract)
   const eventGetArticle = () => dispatch(getArticleById);
   useEffect(() => {
-    Ethereum.getAllArticles(contract).then(setArticles);
-  }, [contract])
+    Ethereum.getAllArticles().then(setArticles);
+  }, [])
   dispatch({type: reducer.UPDATE_ARTICLES , articles: articles});
   var renderElements = [];
   for(let [id, article] of articles){
@@ -120,6 +91,18 @@ const AllArticles = () => {
 }
 
 
+
+const Home = () => {
+  return (
+    <div className={styles.links}>
+      <Link to="/">Home</Link>
+      <Link to="/article/new">Add an article</Link>
+      <Link to="/article/modify">Modify articles</Link>
+      <Link to="/article/all">All articles</Link>
+    </div>
+  )
+}
+
 const NotFound = () => {
   return <div>Not found</div>
 }
@@ -129,11 +112,13 @@ const App = () => {
   useEffect(() => {
     dispatch(Ethereum.connect)
   }, [dispatch])
+  const account = useSelector(({account})=> account)
   const formAdd = Form("add article", Ethereum.addArticle);
   const formModify = Form("modify article", Ethereum.modifyArticle);
   return (
     <div className={styles.app}>
       <div className={styles.title}>Welcome to Decentralized Wikipedia</div>
+      <div>account: {account} </div>
       <Switch>
         <Route path="/article/new">
           {formAdd}
