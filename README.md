@@ -44,6 +44,8 @@ Create a symlink for your OS.
 ln -s build src/build
 ```
 
+Migrate the contract on local block chain
+
 ```bash
 # after open your ganache and setup a local blockchain, migrate your smart contract on blockchain
 npm run contracts:migrate
